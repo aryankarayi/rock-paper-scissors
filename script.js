@@ -1,75 +1,87 @@
+let playerScore = 0;
+let computerScore = 0;
+let playerChoice;
+let computerChoice;
+
 function getComputerChoice() {
-    const choice_list = ["rock", "paper", "scissors"];
-    return choice_list[Math.floor(Math.random() * choice_list.length)];
+    const choices = ["rock", "paper", "scissors"];
+    let choice = Math.floor(Math.random() * choices.length);
+    return choices[choice];
 }
 
-function playRound(playerSelection, computerSelection) {
-    playerSelection = playerSelection.toLowerCase();
+function determineWinner(playerChoice, computerChoice) {
+   
+    /* Rock */
 
-    if (playerSelection == "rock") {
-        if (computerSelection == "rock") {
-            return "Tie";
-        }
-        else if (computerSelection == "paper") {
-            return "You win! Rock beats Paper"
-        }
-        else if (computerSelection == "scissors") {
-            return "You lose! Scissors beats Rock"
-        }
+    if (playerChoice == "rock" && computerChoice == "rock") {
+        return "Tie"
     }
 
-    if (playerSelection == "paper") {
-        if (computerSelection == "paper") {
-            return "Tie";
-        }
-        else if (computerSelection == "rock") {
-            return "You win! Paper beats Rock";
-        }
-        else if (computerSelection == "scissors") {
-            return "You lose! Scissors beats Paper";
-        }
+    if (playerChoice == "rock" && computerChoice == "paper") {
+        return "You lost!"
     }
 
-    if (playerSelection == "scissors" || playerSelection == "scissor") {
-        if (computerSelection == "scissors") {
-            return "Tie";
-        }
-        else if (computerSelection == "paper") {
-            return "You win! Scissors beats Paper";
-        }
-        else if (computerSelection == "rock") {
-            return "You lose! Rock beats Scissors";
-        }
+    if (playerChoice == "rock" && computerChoice == "scissors") {
+        return "You won!"
     }
 
-}
+    /* Paper */
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    for (let i = 0; i < 5; i++) {
-
-        playerSelection = prompt("Rock, Paper, Scissors");
-        computerSelection = getComputerChoice();
-        let result = playRound(playerSelection, computerSelection);
-        console.log(result);
-        if (result.includes("win")) {
-            playerScore++;
-        }
-        else if (result.includes("lose")) {
-            computerScore++;
-        }
+    if (playerChoice == "paper" && computerChoice == "paper") {
+        return "Tie"
     }
 
-    if (playerScore > computerScore) {
-        return "Player wins\n" + playerScore + " - " + computerScore;
+    if (playerChoice == "paper" && computerChoice == "scissors") {
+        return "You lost!"
     }
-    else if (playerScore < computerScore) {
-        return "Computer Wins\n" + playerScore + " - " + computerScore;
+
+    if (playerChoice == "paper" && computerChoice == "rock") {
+        return "You won!"
     }
-    else {
-        return "Tie\n" + playerScore + " - " + computerScore;;
+
+    /* Scissors */
+
+    if (playerChoice == "scissors" && computerChoice == "scissors") {
+        return "Tie"
+    }
+
+    if (playerChoice == "scissors" && computerChoice == "rock") {
+        return "You lost!"
+    }
+
+    if (playerChoice == "scissors" && computerChoice == "paper") {
+        return "You won!"
     }
 }
 
-console.log(game());
+function addScore(text) {
+    if (text == "You won!") {playerScore++;}
+    else if (text == "You lost!") {computerScore++}
+}
+
+function convertToEmoji(text) {
+    if (text == "rock") return "👊";
+    if (text == "paper") return "✋";
+    if (text == "scissors") return "✌";
+}
+
+let buttons = document.querySelectorAll("button");
+let text = document.querySelector(".text")
+let pScore = document.querySelector(".player-score");
+let pEmoji = document.querySelector(".player-emoji");
+let cScore = document.querySelector(".computer-score");
+let cEmoji = document.querySelector(".computer-emoji");
+buttons.forEach(button => button.addEventListener("click", (e) => {
+    playerChoice = e.target.className;
+    computerChoice = getComputerChoice();
+    let winner = determineWinner(playerChoice, computerChoice)
+    text.textContent = winner;
+    addScore(winner);
+    pScore.textContent = "Player: " + playerScore;
+    pEmoji.textContent = convertToEmoji(playerChoice)
+    cScore.textContent = "Computer: " + computerScore;
+    cEmoji.textContent = convertToEmoji(computerChoice)
+}))
+
+
+
