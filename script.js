@@ -65,7 +65,7 @@ function convertToEmoji(text) {
     if (text == "scissors") return "✌";
 }
 
-let buttons = document.querySelectorAll("button");
+let buttons = document.querySelectorAll(".content button");
 let text = document.querySelector(".text")
 let pScore = document.querySelector(".player-score");
 let pEmoji = document.querySelector(".player-emoji");
@@ -81,6 +81,25 @@ buttons.forEach(button => button.addEventListener("click", (e) => {
     pEmoji.textContent = convertToEmoji(playerChoice)
     cScore.textContent = "Computer: " + computerScore;
     cEmoji.textContent = convertToEmoji(computerChoice)
+
+    if (playerScore == 5 || computerScore == 5) {
+        let modal = document.querySelector(".modal");
+        let modalText = document.querySelector(".modal-text");
+        let modalButton = document.querySelector(".modal-button");
+        if (playerScore == 5) {
+            modalText.textContent = "You Win!"
+        } else {modalText.textContent = "You lose!";}
+        modal.classList = "modal active";
+        modalButton.addEventListener("click", () => {
+            modal.classList.remove("active");
+            playerScore = 0;
+            computerScore = 0;
+            pScore.textContent = "Player: 0";
+            cScore.textContent = "Computer: 0";
+            cEmoji.textContent = "👊";
+            pEmoji.textContent = "👊";
+        })
+    }
 }))
 
 
